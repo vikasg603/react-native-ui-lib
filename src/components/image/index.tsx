@@ -1,74 +1,82 @@
 import _ from 'lodash';
-import PropTypes from 'prop-types';
 import React from 'react';
 import hoistNonReactStatic from 'hoist-non-react-statics';
-import {Image as RNImage, StyleSheet, ImageBackground} from 'react-native';
+import {Image as RNImage, StyleSheet, ImageBackground, ImageProps as RNImageProps} from 'react-native';
 import {Constants} from '../../helpers';
+//@ts-ignore
 import {PureBaseComponent} from '../../commons';
+import {PureBaseComponent as PureBaseComponentType} from '../../../typings/commons';
+//@ts-ignore
 import Assets from '../../assets';
+//@ts-ignore
 import Overlay from '../overlay';
+//@ts-ignore
+import {OverlayType} from '../../../typings/components/Overlay';
+
+const TypedBaseComponent = PureBaseComponent as typeof PureBaseComponentType;
+
+export interface PropsTypes extends Omit<RNImageProps, 'tintColor'> {
+  /**
+  * custom source transform handler for manipulating the image source (great for size control)
+  */
+  sourceTransformer?: (props: any) => any;
+  /**
+ * if provided image source will be driven from asset name
+ */
+  assetName?: string;
+  /**
+ * the asset group, default is "icons"
+ */
+  assetGroup?: string;
+  /**
+ * the asset tint
+ */
+  tintColor?: string;
+  /**
+ * whether the image should flip horizontally on RTL locals
+ */
+  supportRTL?: boolean;
+  /**
+ * Show image as a cover, full width, image (according to aspect ratio, default: 16:8)
+ */
+  cover?: boolean;
+  /**
+ * The aspect ratio for the image
+ */
+  aspectRatio?: number;
+  /**
+ * Pass a custom color for the overlay
+ */
+  overlayType?: OverlayType;
+  /**
+ * Pass a custom color for the overlay
+ */
+  overlayColor?: string;
+  /**
+   * Render an overlay with custom content
+   */
+  customOverlayContent: JSX.Element;
+}
+
 
 /**
  * @description: Image wrapper with extra functionality like source transform and assets support
  * @extends: Image
  * @extendslink: https://facebook.github.io/react-native/docs/image.html
  */
-class Image extends PureBaseComponent {
+class Image extends TypedBaseComponent<PropsTypes> {
   static displayName = 'Image';
-
-  static propTypes = {
-    /**
-     * custom source transform handler for manipulating the image source (great for size control)
-     */
-    sourceTransformer: PropTypes.func,
-    /**
-     * if provided image source will be driven from asset name
-     */
-    assetName: PropTypes.string,
-    /**
-     * the asset group, default is "icons"
-     */
-    assetGroup: PropTypes.string,
-    /**
-     * the asset tint
-     */
-    tintColor: PropTypes.string,
-    /**
-     * whether the image should flip horizontally on RTL locals
-     */
-    supportRTL: PropTypes.bool,
-    /**
-     * Show image as a cover, full width, image (according to aspect ratio, default: 16:8)
-     */
-    cover: PropTypes.bool,
-    /**
-     * The aspect ratio for the image
-     */
-    aspectRatio: PropTypes.number,
-    /**
-     * The type of overly to place on top of the image. Note: the image MUST have proper size, see examples in:
-     * https://github.com/wix/react-native-ui-lib/blob/master/demo/src/screens/componentScreens/OverlaysScreen.js
-     */
-    overlayType: Overlay.propTypes.type,
-    /**
-     * Pass a custom color for the overlay
-     */
-    overlayColor: PropTypes.string,
-    /**
-     * Render an overlay with custom content
-     */
-    customOverlayContent: PropTypes.element
-  };
-
   static defaultProps = {
     assetGroup: 'icons'
   };
-
   static overlayTypes = Overlay.overlayTypes;
+  
+  getThemeProps: any; //todo: remove after migrating baseComponent to typescript
 
-  constructor(props) {
+  private sourceTransformer: (props: PropsTypes) => {uri: string};
+  
+  constructor(props: PropsTypes) {
     super(props);
-
     this.sourceTransformer = this.getThemeProps().sourceTransformer;
   }
 
@@ -98,7 +106,7 @@ class Image extends PureBaseComponent {
     }
 
     const {source} = this.props;
-    if (_.get(source, 'uri') === null || _.get(source, 'uri') === '') {
+    if (typeof source === 'object' && (_.get(source, 'uri') === null || _.get(source, 'uri') === '')) {
       return {...source, uri: undefined};
     }
 
@@ -119,7 +127,7 @@ class Image extends PureBaseComponent {
       ...others
     } = this.getThemeProps();
     const shouldFlipRTL = supportRTL && Constants.isRTL;
-    const ImageView = this.shouldUseImageBackground() ? ImageBackground : RNImage;
+    const ImageView = (this.shouldUseImageBackground() ? ImageBackground : RNImage) as React.ElementType;
 
     return (
       <ImageView
@@ -137,7 +145,7 @@ class Image extends PureBaseComponent {
         source={source}
       >
         {(overlayType || customOverlayContent) && (
-          <Overlay style={style} type={overlayType} color={overlayColor} customContent={customOverlayContent}/>
+          <Overlay style={style} type={overlayType} color={overlayColor} customContent={customOverlayContent} />
         )}
       </ImageView>
     );
