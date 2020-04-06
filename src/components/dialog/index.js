@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, TextInput} from 'react-native';
 import {Constants} from '../../helpers';
 import {Colors} from '../../style';
 import {BaseComponent} from '../../commons';
@@ -89,7 +89,8 @@ class Dialog extends BaseComponent {
       alignments: this.state.alignments,
       orientationKey: Constants.orientation,
       modalVisibility: props.visible,
-      dialogVisibility: props.visible
+      dialogVisibility: props.visible,
+      textInput: null
     };
 
     this.setAlignment();
@@ -108,7 +109,9 @@ class Dialog extends BaseComponent {
     const {visible} = this.props;
 
     if (nexVisible && !visible) {
-      this.setState({modalVisibility: true, dialogVisibility: true});
+      const textInput = TextInput.State.currentlyFocusedField();
+      TextInput.State.blurTextInput(textInput);
+      this.setState({modalVisibility: true, dialogVisibility: true, textInput});
     } else if (visible && !nexVisible) {
       this.hideDialogView();
     }
@@ -143,8 +146,13 @@ class Dialog extends BaseComponent {
     });
   };
 
-  hideDialogView = () => {
-    this.setState({dialogVisibility: false});
+  hideDialogView = async () => {
+    const textInput = this.state.textInput;
+    this.setState({dialogVisibility: false, textInput: null});
+    await new Promise(res => setTimeout(res, 500));
+    if (textInput) {
+      TextInput.State.focusTextInput(textInput);
+    }
   };
 
   renderPannableHeader = directions => {
