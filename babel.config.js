@@ -2,10 +2,10 @@ module.exports = {
   env: {
     test: {
       presets: ['module:metro-react-native-babel-preset'],
-      retainLines: true,
-    },
+      retainLines: true
+    }
   },
   presets: ['module:metro-react-native-babel-preset'],
   retainLines: true,
-  plugins: ['transform-inline-environment-variables'],
+  plugins: ['transform-inline-environment-variables', ['@babel/plugin-transform-modules-commonjs', {lazy: () => true}]]
 };

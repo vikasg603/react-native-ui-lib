@@ -9,6 +9,7 @@ import Colors from '../../style/colors';
 import Shadows from '../../style/shadows';
 import WizardStep from './WizardStep';
 import {States, StatesConfig} from './WizardStates';
+console.error('WIZARD?!?')
 
 /**
  * @description: Wizard Component: a wizard presents a series of steps in  prescribed order
