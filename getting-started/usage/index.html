@@ -2,7 +2,7 @@
 For detailed information please go over the other sections: Style, Modifiers, Components...</p>
 <img style="float: right; margin-top: -70px" src="https://cloud.githubusercontent.com/assets/1780255/24791489/f5db80f4-1b82-11e7-8538-5a3388fb4345.png" width=300 />
 <pre><code class="language-jsx">import React, {Component} from 'react';
-import {View, TextInput, Text, Button} from 'react-native-ui-lib';
+import {View, TextField, Text, Button} from 'react-native-ui-lib';
 
 export default class Example extends Component {
 
@@ -10,8 +10,8 @@ export default class Example extends Component {
     return (
       &#x3C;View flex paddingH-25 paddingT-120>
         &#x3C;Text blue50 text20>Welcome&#x3C;/Text>
-        &#x3C;TextInput text50 placeholder="username" dark10/>
-        &#x3C;TextInput text50 placeholder="password" secureTextEntry dark10/>
+        &#x3C;TextField text50 placeholder="username" dark10/>
+        &#x3C;TextField text50 placeholder="password" secureTextEntry dark10/>
         &#x3C;View marginT-100 center>
           &#x3C;Button text70 white background-orange30 label="Login"/>
           &#x3C;Button link text70 orange30 label="Sign Up" marginT-20/>
