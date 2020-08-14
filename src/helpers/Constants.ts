@@ -24,7 +24,7 @@ function setStatusBarHeight() {
   statusBarHeight = isIOS ? 20 : StatusBarManager.HEIGHT;
   if (isIOS) {
     // override guesstimate height with the actual height from StatusBarManager
-    StatusBarManager.getHeight((data: any) => (statusBarHeight = data.height));
+    // StatusBarManager.getHeight((data: any) => (statusBarHeight = data.height));
   }
 }
 

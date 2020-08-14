@@ -14,7 +14,7 @@ const {
   or,
   eq,
   neq,
-  interpolate,
+  interpolateNode,
   Extrapolate,
   Value,
   call,
@@ -209,7 +209,7 @@ function runTiming(clock: any, gestureState: any, initialValue: number, endValue
     ]),
     timing(clock, state, config),
     cond(state.finished, stopClock(clock)),
-    interpolate(state.position, {
+    interpolateNode(state.position, {
       inputRange: [0, 1],
       outputRange: [endValue, initialValue],
       extrapolate: Extrapolate.CLAMP

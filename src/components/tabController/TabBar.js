@@ -16,7 +16,7 @@ import {Colors, Spacings, Typography} from '../../style';
 import {Constants} from '../../helpers';
 import {LogService} from '../../services';
 
-const {Code, Value, interpolate, block, set} = Reanimated;
+const {Code, Value, interpolateNode, block, set} = Reanimated;
 
 const DEFAULT_HEIGHT = 48;
 const INDICATOR_INSET = Spacings.s4;
@@ -372,12 +372,12 @@ class TabBar extends PureComponent {
     const nodes = [];
 
     nodes.push(set(this._indicatorOffset,
-      interpolate(currentPage, {
+      interpolateNode(currentPage, {
         inputRange: itemsOffsets.map((v, i) => i),
         outputRange: itemsOffsets
       })));
     nodes.push(set(this._indicatorWidth,
-      interpolate(currentPage, {inputRange: itemsWidths.map((v, i) => i), outputRange: itemsWidths})));
+      interpolateNode(currentPage, {inputRange: itemsWidths.map((v, i) => i), outputRange: itemsWidths})));
 
     nodes.push(Reanimated.onChange(targetPage, Reanimated.call([targetPage], this.focusSelected)));
 

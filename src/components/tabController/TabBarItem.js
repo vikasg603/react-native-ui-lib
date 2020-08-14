@@ -5,12 +5,11 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 import Reanimated from 'react-native-reanimated';
 import {State} from 'react-native-gesture-handler';
-import {interpolateColor} from 'react-native-redash';
 import {Colors, Typography, Spacings} from '../../style';
 import Badge from '../../components/badge';
 import {TouchableOpacity} from '../../incubator';
 
-const {cond, eq, call, block, event, and} = Reanimated;
+const {cond, eq, call, block, event, and, interpolateColors} = Reanimated;
 
 const DEFAULT_LABEL_COLOR = Colors.black;
 const DEFAULT_SELECTED_LABEL_COLOR = Colors.blue30;
@@ -196,9 +195,9 @@ export default class TabBarItem extends PureComponent {
     const activeColor = !ignore ? selectedLabelColor || DEFAULT_SELECTED_LABEL_COLOR : inactiveColor;
 
     // Animated color
-    const color = interpolateColor(currentPage, {
+    const color = interpolateColors(currentPage, {
       inputRange: [index - 1, index, index + 1],
-      outputRange: [inactiveColor, activeColor, inactiveColor]
+      outputColorRange: [inactiveColor, activeColor, inactiveColor]
     });
 
     return [

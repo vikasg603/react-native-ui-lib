@@ -31,7 +31,7 @@ const {
   Value,
   block,
   onChange,
-  interpolate,
+  interpolateNode,
   round,
   multiply
 } = Reanimated;
@@ -170,7 +170,7 @@ class TabController extends Component {
         set(isScrolling, lessThan(round(abs(diff(carouselOffset))), round(containerWidth))),
         cond(and(not(isAnimating)), [
           set(currentPage,
-            interpolate(round(carouselOffset), {
+            interpolateNode(round(carouselOffset), {
               inputRange: itemStates.map((v, i) => round(multiply(i, containerWidth))),
               outputRange: itemStates.map((v, i) => i)
             })),
