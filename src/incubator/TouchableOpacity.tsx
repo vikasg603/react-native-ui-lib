@@ -2,7 +2,7 @@
 import React, {PureComponent} from 'react';
 import {processColor, StyleSheet, ViewStyle} from 'react-native';
 import _ from 'lodash';
-import Reanimated, {Easing} from 'react-native-reanimated';
+import Reanimated, {EasingNode} from 'react-native-reanimated';
 import {TapGestureHandler, LongPressGestureHandler, State, LongPressGestureHandlerGestureEvent} from 'react-native-gesture-handler';
 import {asBaseComponent, forwardRef, BaseComponentInjectedProps, ForwardRefInjectedProps} from '../commons/new';
 
@@ -189,7 +189,7 @@ function runTiming(clock: any, gestureState: any, initialValue: number, endValue
   const config = {
     duration: 150,
     toValue: new Value(0),
-    easing: Easing.inOut(Easing.ease)
+    easing: EasingNode.inOut(EasingNode.ease)
   };
 
   return block([

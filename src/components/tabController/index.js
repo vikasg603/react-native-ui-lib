@@ -2,7 +2,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
-import Reanimated, {Easing} from 'react-native-reanimated';
+import Reanimated, {EasingNode} from 'react-native-reanimated';
 import {State} from 'react-native-gesture-handler';
 import {timing, fract, between} from 'react-native-redash';
 import {Constants} from '../../helpers';
@@ -160,7 +160,7 @@ class TabController extends Component {
       cond(neq(currentPage, toPage), [
         set(isAnimating, 1),
         set(currentPage,
-          timing({clock, from: fromPage, to: toPage, duration: 280, easing: Easing.bezier(0.34, 1.3, 0.64, 1)}))
+          timing({clock, from: fromPage, to: toPage, duration: 280, easing: EasingNode.bezier(0.34, 1.3, 0.64, 1)}))
       ]),
       // Set isAnimating flag off
       cond(and(eq(isAnimating, 1), not(clockRunning(clock))), set(isAnimating, 0)),
