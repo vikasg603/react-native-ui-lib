@@ -1,5 +1,6 @@
 import React, {PureComponent} from 'react';
 import {Text as RNText, StyleSheet, TextProps, TextStyle, Animated} from 'react-native';
+import Reanimated from 'react-native-reanimated';
 import {
   asBaseComponent,
   forwardRef,
@@ -38,6 +39,10 @@ export type TextPropTypes = TextProps & TypographyModifiers & ColorsModifiers & 
    * Use Animated.Text as a container
    */
   animated?: boolean;
+  /**
+   * Use Reanimated.Text as a container
+   */
+  reanimated?: boolean;
   textAlign?: string;
 }
 
@@ -51,9 +56,17 @@ type PropsTypes = BaseComponentInjectedProps & ForwardRefInjectedProps & TextPro
  */
 class Text extends PureComponent<PropsTypes> {
   static displayName = 'Text';
-  private TextContainer: React.ClassType<any, any, any> = this.props.animated
-    ? Animated.createAnimatedComponent(RNText)
-    : RNText;
+  private TextContainer: React.ClassType<any, any, any>;
+
+  constructor(props: PropsTypes) {
+    super(props);
+    this.TextContainer = RNText;
+    if (props.animated) {
+      this.TextContainer = Animated.createAnimatedComponent(RNText);
+    } else if (props.reanimated) {
+      this.TextContainer = Reanimated.Text;
+    }
+  }  
 
   // setNativeProps(nativeProps) {
   //   this._root.setNativeProps(nativeProps); // eslint-disable-line
