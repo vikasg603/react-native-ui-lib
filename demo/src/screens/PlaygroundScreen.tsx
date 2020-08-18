@@ -1,26 +1,39 @@
 import _ from 'lodash';
-import React, {Component} from 'react';
-import {StyleSheet} from 'react-native';
-import {View, Text, Card, TextField, Button} from 'react-native-ui-lib'; //eslint-disable-line
+import React, {Component, useContext, useEffect} from 'react';
+import {ScrollView} from 'react-native';
+import {View, Text, Colors, Avatar, Incubator} from 'react-native-ui-lib'; //eslint-disable-line
+
+const {Draggable} = Incubator;
 
 export default class PlaygroundScreen extends Component {
   render() {
     return (
-      <View bg-dark80 flex padding-20>
-        <View marginT-20>
-          <TextField placeholder="Placeholder" />
-        </View>
-        <Card height={100} center padding-20>
-          <Text text50>Playground Screen</Text>
-        </Card>
-        <View flex center>
-          <Button marginV-20 label="Button"/>
-        </View>
+      <View bg-dark80 flex>
+        <Draggable>
+          <ScrollView>
+            {_.times(10, (index) => {
+              return (
+                <Draggable.Item key={index} index={index}>
+                  <View
+                    flex
+                    row
+                    bg-white
+                    centerV
+                    paddingH-20
+                    paddingV-5
+                    style={{borderBottomWidth: 1, borderColor: Colors.grey50}}
+                  >
+                    <Avatar backgroundColor={Colors.purple60} size={48} />
+                    <Text marginL-10 text60 grey40>
+                      {index}
+                    </Text>
+                  </View>
+                </Draggable.Item>
+              );
+            })}
+          </ScrollView>
+        </Draggable>
       </View>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {},
-});
