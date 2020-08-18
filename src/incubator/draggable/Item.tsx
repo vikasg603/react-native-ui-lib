@@ -1,10 +1,9 @@
-import React, {useContext, useEffect} from 'react';
+import React, {useContext, useCallback} from 'react';
 import {
   useAnimatedRef,
-  useSharedValue,
-  runOnUI,
-  useAnimatedGestureHandler,
   measure,
+  useSharedValue,
+  useAnimatedGestureHandler,
   withTiming,
   useAnimatedStyle
 } from 'react-native-reanimated';
@@ -13,64 +12,76 @@ import View from '../../components/view';
 import DraggableContext from './DraggableContext';
 
 export default ({index, children}) => {
+  const [layout, onLayout] = useComponentLayout();
   const {drag} = useContext(DraggableContext);
   const aref = useAnimatedRef();
-  // let positionY = useSharedValue(0);
-
-  // useEffect(() => {
-  //   runOnUI(() => {
-  //     aref.current.measure((x, y) => {
-  //       positionY.value = y;
-  //     });
-  //   });
-  // });
 
   const handler = useAnimatedGestureHandler({
-    onStart: (_, ctx) => {
+    onStart: (event, ctx) => {
       const {height} = measure(aref);
 
-      ctx.startX = drag.x.value;
-      ctx.startY = drag.y.value;
+      ctx.startY = drag.translateY.value;
+      drag.y.value = layout.value.y;
       drag.index.value = index;
+      drag.itemHeight.value = height;
       drag.itemHeight.value = height;
     },
     onActive: (event, ctx) => {
-      drag.y.value = ctx.startY + event.translationY;
+      drag.translateY.value = ctx.startY + event.translationY;
+      drag.y.value = layout.value.y + event.translationY;
     },
     onEnd: (_, ctx) => {
-      drag.x.value = withTiming(ctx.startX);
-      drag.y.value = withTiming(ctx.startY, undefined, () => {
+      drag.translateY.value = withTiming(ctx.startY, undefined, () => {
         drag.index.value = -1;
       });
     }
   });
 
   const style = useAnimatedStyle(() => {
-    const style = {zIndex: 0};
-    if (drag.index.value === index) {
-      style.zIndex = 1;
-      style.transform = [
-        {
-          translateY: drag.y.value
-        }
-      ];
-    }/*  else {
-      if (positionY.value < drag.y.value) {
+    const style = {zIndex: 0, transform: []};
+    if (drag.index.value !== -1) {
+      const isDraggedItem = drag.index.value === index;
+      const isAboveDragged =
+        layout.value.y < drag.y.value && drag.index.value < index;
+      const isUnderDragged =
+        layout.value.y + layout.value.height > drag.y.value &&
+        drag.index.value > index;
+
+      let translateY;
+      if (isDraggedItem) {
+        style.zIndex = 1;
+        translateY = drag.translateY.value;
+      } else if (isAboveDragged) {
+        translateY = -drag.itemHeight.value;
+      } else if (isUnderDragged) {
+        translateY = drag.itemHeight.value;
+      }
+
+      if (translateY) {
         style.transform = [
           {
-            translateY: drag.itemHeight.value
+            translateY
           }
         ];
       }
-    } */
+    }
     return style;
   });
-
   return (
     <PanGestureHandler onGestureEvent={handler}>
-      <View ref={aref} reanimated style={style}>
+      <View ref={aref} reanimated style={style} onLayout={onLayout}>
         {children}
       </View>
     </PanGestureHandler>
   );
+};
+
+const useComponentLayout = () => {
+  const layout = useSharedValue({});
+
+  const onLayout = useCallback((event) => {
+    layout.value = event.nativeEvent.layout;
+  }, []);
+
+  return [layout, onLayout];
 };

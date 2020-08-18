@@ -5,11 +5,11 @@ import Item from './Item';
 
 const Draggable = ({children}) => {
   const drag = {
-    x: useSharedValue(0),
+    translateY: useSharedValue(0),
     y: useSharedValue(0),
-    itemHeight: useSharedValue(0),
     dragging: useSharedValue(0),
-    index: useSharedValue(-1)
+    index: useSharedValue(-1),
+    itemHeight: useSharedValue(0)
   };
   return (
     <DraggableContext.Provider value={{drag}}>
