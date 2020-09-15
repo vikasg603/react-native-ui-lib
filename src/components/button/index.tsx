@@ -1,5 +1,13 @@
 import React, {PureComponent} from 'react';
-import {Platform, StyleSheet, LayoutAnimation, LayoutChangeEvent, ImageStyle, TextStyle, StyleProp} from 'react-native';
+import {
+  Platform,
+  StyleSheet,
+  LayoutAnimation,
+  LayoutChangeEvent,
+  ImageStyle,
+  TextStyle,
+  StyleProp
+} from 'react-native';
 import _ from 'lodash';
 import {
   asBaseComponent,
@@ -14,23 +22,25 @@ import {
 //@ts-ignore
 import {Constants} from '../../helpers';
 import {Colors, Typography, ThemeManager, BorderRadiuses} from '../../style';
-import {extractColorValue, extractTypographyValue} from '../../commons/modifiers';
+import {
+  extractColorValue,
+  extractTypographyValue
+} from '../../commons/modifiers';
 import TouchableOpacity, {TouchableOpacityProps} from '../touchableOpacity';
 import Text, {TextPropTypes} from '../text';
 import Image from '../image';
-
 
 export enum ButtonSize {
   xSmall = 'xSmall',
   small = 'small',
   medium = 'medium',
-  large = 'large',
+  large = 'large'
 }
 
 export enum AnimationDirection {
   center = 'center',
   left = 'left',
-  right = 'right',
+  right = 'right'
 }
 
 export type ButtonPropTypes = TouchableOpacityProps &
@@ -59,8 +69,8 @@ export type ButtonPropTypes = TouchableOpacityProps &
      */
     iconOnRight?: boolean;
     /**
-    * whether the icon should flip horizontally on RTL locals
-    */
+     * whether the icon should flip horizontally on RTL locals
+     */
     supportRTL?: boolean;
     /**
      * Color of the button background
@@ -176,7 +186,9 @@ const MIN_WIDTH = {
 };
 const DEFAULT_SIZE = ButtonSize.large;
 
-type Props = ButtonPropTypes & BaseComponentInjectedProps & ForwardRefInjectedProps;
+type Props = ButtonPropTypes &
+  BaseComponentInjectedProps &
+  ForwardRefInjectedProps;
 
 /**
  * @description: Basic button component
@@ -260,7 +272,13 @@ class Button extends PureComponent<Props, ButtonState> {
 
   getBackgroundColor() {
     const {backgroundColor: themeBackgroundColor, modifiers} = this.props;
-    const {disabled, outline, link, disabledBackgroundColor, backgroundColor: propsBackgroundColor} = this.props;
+    const {
+      disabled,
+      outline,
+      link,
+      disabledBackgroundColor,
+      backgroundColor: propsBackgroundColor
+    } = this.props;
     const {backgroundColor: stateBackgroundColor} = modifiers;
 
     if (!outline && !link) {
@@ -268,7 +286,12 @@ class Button extends PureComponent<Props, ButtonState> {
         return disabledBackgroundColor || ThemeManager.CTADisabledColor;
       }
 
-      return propsBackgroundColor || stateBackgroundColor || themeBackgroundColor || Colors.blue30;
+      return (
+        propsBackgroundColor ||
+        stateBackgroundColor ||
+        themeBackgroundColor ||
+        Colors.blue30
+      );
     }
     return 'transparent';
   }
@@ -281,7 +304,14 @@ class Button extends PureComponent<Props, ButtonState> {
   }
 
   getLabelColor() {
-    const {link, linkColor, outline, outlineColor, disabled, color: propsColor} = this.props;
+    const {
+      link,
+      linkColor,
+      outline,
+      outlineColor,
+      disabled,
+      color: propsColor
+    } = this.props;
 
     let color: string | undefined = Colors.white;
     if (link) {
@@ -320,33 +350,49 @@ class Button extends PureComponent<Props, ButtonState> {
 
     const CONTAINER_STYLE_BY_SIZE: Dictionary<any> = {};
     CONTAINER_STYLE_BY_SIZE[Button.sizes.xSmall] = round
-      ? {height: this.state.size, width: this.state.size, padding: PADDINGS.XSMALL}
+      ? {
+          height: this.state.size,
+          width: this.state.size,
+          padding: PADDINGS.XSMALL
+        }
       : {
-        paddingVertical: PADDINGS.XSMALL,
-        paddingHorizontal: HORIZONTAL_PADDINGS.XSMALL,
-        minWidth: MIN_WIDTH.XSMALL
-      };
+          paddingVertical: PADDINGS.XSMALL,
+          paddingHorizontal: HORIZONTAL_PADDINGS.XSMALL,
+          minWidth: MIN_WIDTH.XSMALL
+        };
     CONTAINER_STYLE_BY_SIZE[Button.sizes.small] = round
-      ? {height: this.state.size, width: this.state.size, padding: PADDINGS.SMALL}
+      ? {
+          height: this.state.size,
+          width: this.state.size,
+          padding: PADDINGS.SMALL
+        }
       : {
-        paddingVertical: PADDINGS.SMALL,
-        paddingHorizontal: HORIZONTAL_PADDINGS.SMALL,
-        minWidth: MIN_WIDTH.SMALL
-      };
+          paddingVertical: PADDINGS.SMALL,
+          paddingHorizontal: HORIZONTAL_PADDINGS.SMALL,
+          minWidth: MIN_WIDTH.SMALL
+        };
     CONTAINER_STYLE_BY_SIZE[Button.sizes.medium] = round
-      ? {height: this.state.size, width: this.state.size, padding: PADDINGS.MEDIUM}
+      ? {
+          height: this.state.size,
+          width: this.state.size,
+          padding: PADDINGS.MEDIUM
+        }
       : {
-        paddingVertical: PADDINGS.MEDIUM,
-        paddingHorizontal: HORIZONTAL_PADDINGS.MEDIUM,
-        minWidth: MIN_WIDTH.MEDIUM
-      };
+          paddingVertical: PADDINGS.MEDIUM,
+          paddingHorizontal: HORIZONTAL_PADDINGS.MEDIUM,
+          minWidth: MIN_WIDTH.MEDIUM
+        };
     CONTAINER_STYLE_BY_SIZE[Button.sizes.large] = round
-      ? {height: this.state.size, width: this.state.size, padding: PADDINGS.LARGE}
+      ? {
+          height: this.state.size,
+          width: this.state.size,
+          padding: PADDINGS.LARGE
+        }
       : {
-        paddingVertical: PADDINGS.LARGE,
-        paddingHorizontal: HORIZONTAL_PADDINGS.LARGE,
-        minWidth: MIN_WIDTH.LARGE
-      };
+          paddingVertical: PADDINGS.LARGE,
+          paddingHorizontal: HORIZONTAL_PADDINGS.LARGE,
+          minWidth: MIN_WIDTH.LARGE
+        };
 
     if (outline) {
       _.forEach(CONTAINER_STYLE_BY_SIZE, (style) => {
@@ -397,13 +443,19 @@ class Button extends PureComponent<Props, ButtonState> {
   }
 
   getBorderRadiusStyle() {
-    const {link, fullWidth, borderRadius: borderRadiusFromProps, modifiers} = this.props;
+    const {
+      link,
+      fullWidth,
+      borderRadius: borderRadiusFromProps,
+      modifiers
+    } = this.props;
     if (link || fullWidth || borderRadiusFromProps === 0) {
       return {borderRadius: 0};
     }
 
     const {borderRadius: borderRadiusFromState} = modifiers;
-    const borderRadius = borderRadiusFromProps || borderRadiusFromState || BorderRadiuses.br100;
+    const borderRadius =
+      borderRadiusFromProps || borderRadiusFromState || BorderRadiuses.br100;
     return {borderRadius};
   }
 
@@ -411,7 +463,10 @@ class Button extends PureComponent<Props, ButtonState> {
     const backgroundColor = this.getBackgroundColor();
     const {enableShadow} = this.props;
     if (enableShadow) {
-      return [this.styles.shadowStyle, backgroundColor && {shadowColor: backgroundColor}];
+      return [
+        this.styles.shadowStyle,
+        backgroundColor && {shadowColor: backgroundColor}
+      ];
     }
   }
 
@@ -422,7 +477,9 @@ class Button extends PureComponent<Props, ButtonState> {
       tintColor: this.getLabelColor()
     };
 
-    const marginSide = [Button.sizes.large, Button.sizes.medium].includes(size) ? 8 : 4;
+    const marginSide = [Button.sizes.large, Button.sizes.medium].includes(size)
+      ? 8
+      : 4;
     if (!this.isIconButton) {
       if (iconOnRight) {
         iconStyle.marginLeft = marginSide;
@@ -464,7 +521,13 @@ class Button extends PureComponent<Props, ButtonState> {
       if (typeof iconSource === 'function') {
         return iconSource(iconStyle);
       } else {
-        return <Image source={iconSource} supportRTL={supportRTL} style={iconStyle}/>;
+        return (
+          <Image
+            source={iconSource}
+            supportRTL={supportRTL}
+            style={iconStyle}
+          />
+        );
       }
     }
     return null;
@@ -479,7 +542,13 @@ class Button extends PureComponent<Props, ButtonState> {
     if (label) {
       return (
         <Text
-          style={[this.styles.text, !!color && {color}, labelSizeStyle, {...typography}, labelStyle]}
+          style={[
+            this.styles.text,
+            !!color && {color},
+            labelSizeStyle,
+            {...typography},
+            labelStyle
+          ]}
           numberOfLines={1}
           {...labelProps}
         >
@@ -491,7 +560,17 @@ class Button extends PureComponent<Props, ButtonState> {
   }
 
   render() {
-    const {onPress, disabled, link, style, testID, animateLayout, modifiers, forwardedRef, ...others} = this.props;
+    const {
+      onPress,
+      disabled,
+      link,
+      style,
+      testID,
+      animateLayout,
+      modifiers,
+      forwardedRef,
+      ...others
+    } = this.props;
     const shadowStyle = this.getShadowStyle();
     const {margins} = modifiers;
     const backgroundColor = this.getBackgroundColor();
@@ -567,4 +646,6 @@ function createStyles() {
 
 export {Button}; // For tests
 
-export default asBaseComponent<ButtonPropTypes, typeof Button>(forwardRef(Button));
+export default asBaseComponent<ButtonPropTypes, typeof Button>(
+  forwardRef(Button)
+);
