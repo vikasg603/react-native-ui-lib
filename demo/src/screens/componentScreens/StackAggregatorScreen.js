@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import _, { constant } from 'lodash';
 import React, {Component} from 'react';
 import {ScrollView} from 'react-native';
 import {/* Colors, Typography,  */View, Text, Button, StackAggregator} from 'react-native-ui-lib'; //eslint-disable-line
@@ -9,12 +9,18 @@ const contents = [
   'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
   'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
   'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dummy text of the printing and typesetting industry.'
-]
+];
 
 export default class StackAggregatorScreen extends Component {
-  
+
+  state = {
+    array: contents
+  }
   onItemPress = (index) => {
     console.warn('item pressed: ', index);
+    if (index === 0) {
+      this.setState({array: contents.reverse()});
+    }
   }
 
   onPress = (index) => {
@@ -22,10 +28,11 @@ export default class StackAggregatorScreen extends Component {
   }
 
   renderItem = (item, index) => {
+    console.warn('renderItem');
     return (
       <View key={index} center padding-12>
         <Button label={`${index}`} marginB-10 size={'small'} onPress={() => this.onPress(index)}/>
-        <Text>{contents[index]}</Text>
+        <Text>{this.state.array[index]}</Text>
       </View>
     );
   }
