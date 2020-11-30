@@ -7,15 +7,13 @@ interface Props {
   dialogVisibility?: boolean;
   modalVisibility?: boolean;
   overlayBackgroundColor?: string;
-  onFadeDone?: () => void;
 }
 
 const OverlayFadingBackground = ({
   testID,
   dialogVisibility,
   modalVisibility,
-  overlayBackgroundColor,
-  onFadeDone
+  overlayBackgroundColor
 }: Props) => {
   const fadeAnimation = useRef(new Animated.Value(0)).current;
 
@@ -24,8 +22,8 @@ const OverlayFadingBackground = ({
       toValue,
       duration: 400,
       useNativeDriver: true
-    }).start(onFadeDone);
-  }, [fadeAnimation, onFadeDone]);
+    }).start();
+  }, [fadeAnimation]);
 
   useEffect(() => {
     if (!dialogVisibility) {
